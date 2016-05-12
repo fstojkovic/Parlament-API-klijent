@@ -20,7 +20,7 @@ import domain.Poslanik;
 
 public class ParlamentAPIKomunikacija {
 
-	private static final String membersURL = "http://147.91.128.71:9090/parlament/api/members";
+	private static final String membersURL = "http://147.91.128.71:9090/parlament/api/members?limit=20";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 
 	public List<Poslanik> vratiPoslanike() throws ParseException {
@@ -39,8 +39,8 @@ public class ParlamentAPIKomunikacija {
 				m.setId(memberJson.get("id").getAsInt());
 				m.setIme(memberJson.get("name").getAsString());
 				m.setPrezime(memberJson.get("lastName").getAsString());
-				if (memberJson.get("datumRodjenja") != null)
-					m.setDatumRodjenja(sdf.parse(memberJson.get("datumRodjenja").getAsString()));
+				if (memberJson.get("birthDate") != null)
+					m.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
 
 				members.add(m);
 			}

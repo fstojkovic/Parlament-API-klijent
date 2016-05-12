@@ -2,11 +2,17 @@ package domain;
 
 import java.util.Date;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Poslanik {
 
+	// @SerializedName("id")
 	private int id;
+	// @SerializedName("name")
 	private String ime;
+	// @SerializedName("lastName")
 	private String prezime;
+	// @SerializedName("birthDate")
 	private Date datumRodjenja;
 
 	public int getId() {
@@ -55,10 +61,7 @@ public class Poslanik {
 		if (getClass() != obj.getClass())
 			return false;
 		Poslanik other = (Poslanik) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
