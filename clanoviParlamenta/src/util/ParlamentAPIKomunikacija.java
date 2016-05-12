@@ -21,10 +21,12 @@ import com.google.gson.JsonObject;
 
 import domain.Poslanik;
 
+
 public class ParlamentAPIKomunikacija {
 
 	private static final String membersURL = "http://147.91.128.71:9090/parlament/api/members?limit=20";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
+	
 
 	public List<Poslanik> vratiPoslanike() throws ParseException {
 		try {

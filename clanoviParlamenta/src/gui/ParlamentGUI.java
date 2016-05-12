@@ -34,7 +34,7 @@ public class ParlamentGUI extends JFrame {
 	private JPanel contentPane;
 	private JPanel panel;
 	private JButton btnSacuvajUFajl;
-	private JButton btnIspuniTabelu;
+	private JButton btnIspisi;
 	private JButton btnUpdate;
 
 	private JPanel panelJug;
@@ -62,7 +62,7 @@ public class ParlamentGUI extends JFrame {
 		setTitle("Clanovi parlamenta");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 722, 470);
-
+		API = new ParlamentAPIKomunikacija();
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -71,7 +71,6 @@ public class ParlamentGUI extends JFrame {
 		contentPane.add(getPanelJug(), BorderLayout.SOUTH);
 		contentPane.add(getPanelCentar(), BorderLayout.CENTER);
 
-		// sistem = new Menjacnica();
 	}
 
 	private JPanel getPanel() {
@@ -80,7 +79,7 @@ public class ParlamentGUI extends JFrame {
 			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 			panel.setPreferredSize(new Dimension(160, 10));
 			panel.add(getBtnSacuvajUFajl());
-			panel.add(getBtnIspuniTabelu());
+			panel.add(getBtnIspisi());
 			panel.add(getBtnUpdate());
 		}
 		return panel;
@@ -93,8 +92,9 @@ public class ParlamentGUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						Kontroler.sacuvajJson();
+						ispisiStatus("Poslanici su preuzeti sa servisa.");
 					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(contentPane, e1.getMessage(), "Greska",
+						JOptionPane.showMessageDialog(contentPane, "Greska prilikom cuvanja fajla", "Greska",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -104,17 +104,24 @@ public class ParlamentGUI extends JFrame {
 		return btnSacuvajUFajl;
 	}
 
-	private JButton getBtnIspuniTabelu() {
-		if (btnIspuniTabelu == null) {
-			btnIspuniTabelu = new JButton("Ispuni tabelu");
-			btnIspuniTabelu.addActionListener(new ActionListener() {
+	private JButton getBtnIspisi() {
+		if (btnIspisi == null) {
+			btnIspisi = new JButton("Ispisi");
+			btnIspisi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					// obrisiKurs();
+					ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
+					try {
+						model.ucitajPoslanike(API.vratiPoslanike());
+						ispisiStatus("Tabela popunjena podacima preuzetim sa servisa.");
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja podataka u tabelu",
+								"Greska", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			});
-			btnIspuniTabelu.setPreferredSize(new Dimension(140, 25));
+			btnIspisi.setPreferredSize(new Dimension(140, 25));
 		}
-		return btnIspuniTabelu;
+		return btnIspisi;
 
 	}
 
@@ -129,37 +136,6 @@ public class ParlamentGUI extends JFrame {
 			btnUpdate.setPreferredSize(new Dimension(140, 25));
 		}
 		return btnUpdate;
-	}
-
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
-	}
-
-	public void osveziTabelu() {
-		ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
-		try {
-			model.ucitajPoslanike(API.vratiPoslanike());
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	private JPanel getPanelJug() {
@@ -214,4 +190,7 @@ public class ParlamentGUI extends JFrame {
 		return scrollPane;
 	}
 
+	public void ispisiStatus(String txt) {
+		jtfStatus.setText(txt);
+	}
 }

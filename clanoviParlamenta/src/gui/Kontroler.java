@@ -1,9 +1,12 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import domain.Poslanik;
 import util.ParlamentAPIKomunikacija;
 
 public class Kontroler {
@@ -42,4 +45,10 @@ public class Kontroler {
 
 	}
 
+//	public static List<Poslanik> vratiClanoveParlamenta() throws Exception {
+//		return API.vratiPoslanike();
+//	}
+
+	
+	
 }
