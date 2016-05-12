@@ -1,8 +1,11 @@
 package util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -78,6 +81,16 @@ public class ParlamentAPIKomunikacija {
 		in.close();
 
 		return response.toString();
+	}
+
+	public void ucitajUFajl() throws Exception {
+
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")));
+		String result = sendGet(membersURL);
+		out.println(result);
+
+		out.close();
+
 	}
 
 }

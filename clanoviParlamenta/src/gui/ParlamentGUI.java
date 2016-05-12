@@ -16,7 +16,7 @@ import java.text.ParseException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -33,7 +33,7 @@ public class ParlamentGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
-	private JButton btnPrebaciUJSON;
+	private JButton btnSacuvajUFajl;
 	private JButton btnIspuniTabelu;
 	private JButton btnUpdate;
 
@@ -79,24 +79,29 @@ public class ParlamentGUI extends JFrame {
 			panel = new JPanel();
 			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 			panel.setPreferredSize(new Dimension(160, 10));
-			panel.add(getBtnPrebaciUJSON());
+			panel.add(getBtnSacuvajUFajl());
 			panel.add(getBtnIspuniTabelu());
 			panel.add(getBtnUpdate());
 		}
 		return panel;
 	}
 
-	private JButton getBtnPrebaciUJSON() {
-		if (btnPrebaciUJSON == null) {
-			btnPrebaciUJSON = new JButton("Prebaci u JSON");
-			btnPrebaciUJSON.addActionListener(new ActionListener() {
+	private JButton getBtnSacuvajUFajl() {
+		if (btnSacuvajUFajl == null) {
+			btnSacuvajUFajl = new JButton("Sacuvaj u fajl");
+			btnSacuvajUFajl.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					// prikaziDodajKursGUI();
+					try {
+						Kontroler.sacuvajJson();
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(contentPane, e1.getMessage(), "Greska",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			});
-			btnPrebaciUJSON.setPreferredSize(new Dimension(140, 25));
+			btnSacuvajUFajl.setPreferredSize(new Dimension(140, 25));
 		}
-		return btnPrebaciUJSON;
+		return btnSacuvajUFajl;
 	}
 
 	private JButton getBtnIspuniTabelu() {

@@ -4,9 +4,12 @@ import java.awt.EventQueue;
 
 import javax.swing.JOptionPane;
 
+import util.ParlamentAPIKomunikacija;
+
 public class Kontroler {
 
 	private static ParlamentGUI glavniProzor;
+	private static ParlamentAPIKomunikacija API;
 
 	/**
 	 * Launch the application.
@@ -15,6 +18,7 @@ public class Kontroler {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					API = new ParlamentAPIKomunikacija();
 					ParlamentGUI frame = new ParlamentGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -30,6 +34,11 @@ public class Kontroler {
 		if (izbor == JOptionPane.YES_OPTION) {
 			System.exit(0);
 		}
+
+	}
+
+	public static void sacuvajJson() throws Exception {
+		API.ucitajUFajl();
 
 	}
 

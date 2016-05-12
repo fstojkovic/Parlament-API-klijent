@@ -16,6 +16,8 @@ public class Main {
 		for (Poslanik m : members) {
 			System.out.println(m);
 		}
+		
+		comm.ucitajUFajl();
 
 	}
 
