@@ -45,19 +45,19 @@ public class ParlamentAPIKomunikacija {
 			for (int i = 0; i < membersJson.size(); i++) {
 				JsonObject memberJson = (JsonObject) membersJson.get(i);
 
-				Poslanik m = new Poslanik();
-				m.setId(memberJson.get("id").getAsInt());
-				m.setIme(memberJson.get("name").getAsString());
-				m.setPrezime(memberJson.get("lastName").getAsString());
+				Poslanik p = new Poslanik();
+				p.setId(memberJson.get("id").getAsInt());
+				p.setIme(memberJson.get("name").getAsString());
+				p.setPrezime(memberJson.get("lastName").getAsString());
 				if (memberJson.get("birthDate") != null)
 					try {
-						m.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
+						p.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
 					} catch (ParseException e) {
 						JOptionPane.showMessageDialog(glavniProzor, "Greska prilikom parsiranja datuma", "Greska",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
-				members.add(m);
+				members.add(p);
 			}
 
 			return members;
@@ -70,8 +70,8 @@ public class ParlamentAPIKomunikacija {
 		return new LinkedList<Poslanik>();
 	}
 
-	//Citanje podataka sa linka i upisavanje u string
-	
+	// Citanje podataka sa linka i upisavanje u string
+
 	private String sendGet(String url) throws IOException {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -97,7 +97,7 @@ public class ParlamentAPIKomunikacija {
 		return response.toString();
 	}
 
-	//Upisivanje stringa u fajl
+	// Upisivanje stringa u fajl
 	public void sacuvajUFajl() throws Exception {
 
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")));
@@ -108,7 +108,7 @@ public class ParlamentAPIKomunikacija {
 
 	}
 
-	//Konverzija u Json format i cuvanje u fajl
+	// Konverzija u Json format i cuvanje u fajl
 	public static void sacuvajUpdate(LinkedList<Poslanik> poslanik) throws Exception {
 		JsonArray membersArray = new JsonArray();
 
@@ -119,7 +119,7 @@ public class ParlamentAPIKomunikacija {
 			memberJson.addProperty("id", p.getId());
 			memberJson.addProperty("name", p.getIme());
 			memberJson.addProperty("lastName", p.getPrezime());
-			memberJson.addProperty("birthDate", p.getDatumRodjenja().toString());
+			memberJson.addProperty("birthDate", sdf.format(p.getDatumRodjenja()));
 			membersArray.add(memberJson);
 		}
 

@@ -1,5 +1,7 @@
 package gui.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,7 +11,7 @@ import javax.swing.table.AbstractTableModel;
 import domain.Poslanik;
 
 public class ParlamentTableModel extends AbstractTableModel {
-
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private final String[] kolone = new String[] { "ID", "Ime", "Prezime", "Datum rodjenja" };
 
 	private List<Poslanik> poslanici = new LinkedList<Poslanik>();
@@ -55,7 +57,7 @@ public class ParlamentTableModel extends AbstractTableModel {
 		case 2:
 			return p.getPrezime();
 		case 3:
-			return p.getDatumRodjenja();
+			return sdf.format(p.getDatumRodjenja());
 		default:
 			return "N/A";
 		}

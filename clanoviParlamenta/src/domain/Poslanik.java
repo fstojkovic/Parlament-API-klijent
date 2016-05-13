@@ -1,18 +1,19 @@
 package domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
 
 public class Poslanik {
-
-	//@SerializedName("id")
+	
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private int id;
-	//@SerializedName("name")
+	@SerializedName("name")
 	private String ime;
-	// @SerializedName("lastName")
+	@SerializedName("lastName")
 	private String prezime;
-	//@SerializedName("birthDate")
+	@SerializedName("birthDate")
 	private Date datumRodjenja;
 
 	public int getId() {
@@ -49,7 +50,7 @@ public class Poslanik {
 
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", datumRodjenja=" + datumRodjenja + "]";
+		return "Member [id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", datumRodjenja=" + sdf.format(datumRodjenja) + "]";
 	}
 
 	@Override
