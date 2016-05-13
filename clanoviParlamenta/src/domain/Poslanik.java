@@ -6,13 +6,13 @@ import com.google.gson.annotations.SerializedName;
 
 public class Poslanik {
 
-	// @SerializedName("id")
+	//@SerializedName("id")
 	private int id;
-	// @SerializedName("name")
+	//@SerializedName("name")
 	private String ime;
 	// @SerializedName("lastName")
 	private String prezime;
-	// @SerializedName("birthDate")
+	//@SerializedName("birthDate")
 	private Date datumRodjenja;
 
 	public int getId() {

@@ -13,6 +13,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.ParseException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +28,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import domain.Poslanik;
 import gui.model.ParlamentTableModel;
 import util.ParlamentAPIKomunikacija;
 
@@ -110,13 +113,12 @@ public class ParlamentGUI extends JFrame {
 			btnIspisi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
-					try {
-						model.ucitajPoslanike(API.vratiPoslanike());
+
+					List<Poslanik> p = Kontroler.vratiClanoveParlamenta();
+					model.ucitajPoslanike(p);
+					if (!(p.isEmpty()))
 						ispisiStatus("Tabela popunjena podacima preuzetim sa servisa.");
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja podataka u tabelu",
-								"Greska", JOptionPane.ERROR_MESSAGE);
-					}
+
 				}
 			});
 			btnIspisi.setPreferredSize(new Dimension(140, 25));
@@ -130,7 +132,19 @@ public class ParlamentGUI extends JFrame {
 			btnUpdate = new JButton("Update");
 			btnUpdate.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					// prikaziIzvrsiZamenuGUI();
+					ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
+					try {
+						if (model.getPoslanici().isEmpty()) {
+							JOptionPane.showMessageDialog(contentPane, "Tabela je prazna!", "Greska",
+									JOptionPane.ERROR_MESSAGE);
+						} else {
+							Kontroler.updateTable((LinkedList<Poslanik>) model.getPoslanici());
+							ispisiStatus("Izmenjeni podaci su sacuvani.");
+						}
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja u fajl.", "Greska",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			});
 			btnUpdate.setPreferredSize(new Dimension(140, 25));

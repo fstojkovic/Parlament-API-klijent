@@ -1,0 +1,43 @@
+[{
+	"meta": {
+		"href": "http://api.otvoreniparlament.rs/v1/members/123"
+	},
+	"id": 123,
+	"name": "Marko",
+	"lastName": "Markovic",
+	"mail": "marko.markovic@site.rs",
+	"birthDate": "01.01.1960.",
+	"birthPlace": "Beograd",
+	"placeOfResidence": "Beograd",
+	"gender": "m",
+	"biography": "biography text",
+	"parties": [{
+		"meta": {
+			"href": "http://api.otvoreniparlament.rs/v1/parties/111"
+		},
+		"id": 444,
+		"title": "Partija Srbije",
+		"members": "http://api.otvoreniparlament.rs/v1/parties/111/members"
+	}]
+}, {
+	"meta": {
+		"href": "http://api.otvoreniparlament.rs/v1/members/321"
+	},
+	"id": 321,
+	"name": "Petar",
+	"lastName": "Petrovic",
+	"mail": "petar.petrovic@site.rs",
+	"birthDate": "01.01.1970.",
+	"birthPlace": "Nis",
+	"placeOfResidence": "Nis",
+	"gender": "m",
+	"biography": "biography text",
+	"parties": [{
+		"meta": {
+			"href": "http://api.otvoreniparlament.rs/v1/parties/222"
+		},
+		"id": 222,
+		"title": "Partija Srbije 2",
+		"members": "http://api.otvoreniparlament.rs/v1/parties/222/members"
+	}]
+}]

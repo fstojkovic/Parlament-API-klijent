@@ -41,14 +41,17 @@ public class Kontroler {
 	}
 
 	public static void sacuvajJson() throws Exception {
-		API.ucitajUFajl();
+		API.sacuvajUFajl();
 
 	}
 
-//	public static List<Poslanik> vratiClanoveParlamenta() throws Exception {
-//		return API.vratiPoslanike();
-//	}
+	public static List<Poslanik> vratiClanoveParlamenta() {
+		return API.vratiPoslanike();
+	}
 
-	
-	
+	public static void updateTable(LinkedList<Poslanik> p) throws Exception {
+		API.sacuvajUpdate(p);
+
+	}
+
 }

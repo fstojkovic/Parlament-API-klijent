@@ -61,9 +61,10 @@ public class ParlamentTableModel extends AbstractTableModel {
 		}
 	}
 
-	/*@Override
+	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		Poslanik p = poslanici.get(rowIndex);
+
 		switch (columnIndex) {
 		case 0:
 			return;
@@ -71,12 +72,12 @@ public class ParlamentTableModel extends AbstractTableModel {
 			p.setIme((String) aValue);
 		case 2:
 			p.setPrezime((String) aValue);
-		case 3:
-			p.setDatumRodjenja((Date) aValue);
+			// case 3:
+			// p.setDatumRodjenja(Date.parse(aValue));
 
-		}*/
+		}
 
-	//}
+	}
 
 	@Override
 	public String getColumnName(int column) {
@@ -91,7 +92,9 @@ public class ParlamentTableModel extends AbstractTableModel {
 	public Poslanik vratiPoslanika(int index) {
 		return poslanici.get(index);
 	}
-	
 
+	public List<Poslanik> getPoslanici() {
+		return poslanici;
+	}
 
 }

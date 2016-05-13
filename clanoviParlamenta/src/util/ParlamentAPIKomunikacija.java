@@ -2,6 +2,7 @@ package util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,26 +15,30 @@ import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import domain.Poslanik;
-
+import gui.ParlamentGUI;
 
 public class ParlamentAPIKomunikacija {
 
 	private static final String membersURL = "http://147.91.128.71:9090/parlament/api/members?limit=20";
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
-	
+	private static ParlamentGUI glavniProzor;
 
-	public List<Poslanik> vratiPoslanike() throws ParseException {
+	// citanje podataka u Json formatu iz fajla
+
+	public List<Poslanik> vratiPoslanike() {
 		try {
-			String result = sendGet(membersURL);
+			FileReader reader = new FileReader("data/provera.json");
 
 			Gson gson = new GsonBuilder().create();
-			JsonArray membersJson = gson.fromJson(result, JsonArray.class);
+			JsonArray membersJson = gson.fromJson(reader, JsonArray.class);
 
 			LinkedList<Poslanik> members = new LinkedList<Poslanik>();
 
@@ -45,21 +50,28 @@ public class ParlamentAPIKomunikacija {
 				m.setIme(memberJson.get("name").getAsString());
 				m.setPrezime(memberJson.get("lastName").getAsString());
 				if (memberJson.get("birthDate") != null)
-					m.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
+					try {
+						m.setDatumRodjenja(sdf.parse(memberJson.get("birthDate").getAsString()));
+					} catch (ParseException e) {
+						JOptionPane.showMessageDialog(glavniProzor, "Greska prilikom parsiranja datuma", "Greska",
+								JOptionPane.ERROR_MESSAGE);
+					}
 
 				members.add(m);
 			}
 
 			return members;
 
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(glavniProzor, "Ne postoji fajl na lokaciji data/members.json", "Greska",
+					JOptionPane.ERROR_MESSAGE);
+
 		}
 		return new LinkedList<Poslanik>();
 	}
 
+	//Citanje podataka sa linka i upisavanje u string
+	
 	private String sendGet(String url) throws IOException {
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -85,7 +97,8 @@ public class ParlamentAPIKomunikacija {
 		return response.toString();
 	}
 
-	public void ucitajUFajl() throws Exception {
+	//Upisivanje stringa u fajl
+	public void sacuvajUFajl() throws Exception {
 
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")));
 		String result = sendGet(membersURL);
@@ -95,4 +108,29 @@ public class ParlamentAPIKomunikacija {
 
 	}
 
+	//Konverzija u Json format i cuvanje u fajl
+	public static void sacuvajUpdate(LinkedList<Poslanik> poslanik) throws Exception {
+		JsonArray membersArray = new JsonArray();
+
+		for (int i = 0; i < poslanik.size(); i++) {
+			Poslanik p = poslanik.get(i);
+
+			JsonObject memberJson = new JsonObject();
+			memberJson.addProperty("id", p.getId());
+			memberJson.addProperty("name", p.getIme());
+			memberJson.addProperty("lastName", p.getPrezime());
+			memberJson.addProperty("birthDate", p.getDatumRodjenja().toString());
+			membersArray.add(memberJson);
+		}
+
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/updatedMembers.json")));
+
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+		String membersString = gson.toJson(membersArray);
+
+		out.println(membersString);
+		out.close();
+
+	}
 }
