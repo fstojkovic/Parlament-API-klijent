@@ -49,6 +49,7 @@ public class Kontroler {
 		return API.vratiPoslanike();
 	}
 
+	@SuppressWarnings("static-access")
 	public static void updateTable(LinkedList<Poslanik> p) throws Exception {
 		API.sacuvajUpdate(p);
 

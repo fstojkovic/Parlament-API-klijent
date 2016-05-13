@@ -9,11 +9,11 @@ public class Poslanik {
 	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private int id;
-	@SerializedName("name")
+	//@SerializedName("name")
 	private String ime;
-	@SerializedName("lastName")
+	//@SerializedName("lastName")
 	private String prezime;
-	@SerializedName("birthDate")
+	//@SerializedName("birthDate")
 	private Date datumRodjenja;
 
 	public int getId() {

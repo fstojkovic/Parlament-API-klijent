@@ -2,18 +2,21 @@ package gui.model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 import domain.Poslanik;
+import gui.ParlamentGUI;
 
+@SuppressWarnings("serial")
 public class ParlamentTableModel extends AbstractTableModel {
+	
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private final String[] kolone = new String[] { "ID", "Ime", "Prezime", "Datum rodjenja" };
-
+	private static ParlamentGUI glavniProzor;
 	private List<Poslanik> poslanici = new LinkedList<Poslanik>();
 
 	public ParlamentTableModel() {
@@ -67,15 +70,33 @@ public class ParlamentTableModel extends AbstractTableModel {
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		Poslanik p = poslanici.get(rowIndex);
 
+		String s = (String) (aValue);
 		switch (columnIndex) {
 		case 0:
 			return;
 		case 1:
-			p.setIme((String) aValue);
+			if (!s.isEmpty())
+				p.setIme(s);
+			else
+				JOptionPane.showMessageDialog(glavniProzor, "Vrednost kolone ne sme biti prazan string!", "Greska",
+						JOptionPane.ERROR_MESSAGE);
+			return;
 		case 2:
-			p.setPrezime((String) aValue);
-			// case 3:
-			// p.setDatumRodjenja(Date.parse(aValue));
+			if (!s.isEmpty())
+				p.setIme(s);
+			else
+				JOptionPane.showMessageDialog(glavniProzor, "Vrednost kolone ne sme biti prazan string!", "Greska",
+						JOptionPane.ERROR_MESSAGE);
+			return;
+		case 3:
+			try {
+				p.setDatumRodjenja(sdf.parse(s));
+				return;
+			} catch (ParseException e) {
+				JOptionPane.showMessageDialog(glavniProzor, "Datum mora biti formata: dd.MM.yyyy. ", "Greska",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			return;
 
 		}
 

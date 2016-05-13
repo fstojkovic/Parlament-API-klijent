@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,12 +99,14 @@ public class ParlamentAPIKomunikacija {
 	// Upisivanje stringa u fajl
 	public void sacuvajUFajl() throws Exception {
 
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")));
 		String result = sendGet(membersURL);
-		out.println(result);
+		if (!result.isEmpty()) {
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/serviceMembers.json")));
 
-		out.close();
+			out.println(result);
 
+			out.close();
+		}
 	}
 
 	// Konverzija u Json format i cuvanje u fajl

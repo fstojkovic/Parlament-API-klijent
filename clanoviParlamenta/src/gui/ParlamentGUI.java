@@ -1,18 +1,16 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.ParseException;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -79,7 +77,6 @@ public class ParlamentGUI extends JFrame {
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
-			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 			panel.setPreferredSize(new Dimension(160, 10));
 			panel.add(getBtnSacuvajUFajl());
 			panel.add(getBtnIspisi());
@@ -97,7 +94,7 @@ public class ParlamentGUI extends JFrame {
 						Kontroler.sacuvajJson();
 						ispisiStatus("Poslanici su preuzeti sa servisa.");
 					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(contentPane, "Greska prilikom cuvanja fajla", "Greska",
+						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja u fajl." + '\n' + "Proveri da li sajt radi. ", "Greska",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
@@ -142,7 +139,7 @@ public class ParlamentGUI extends JFrame {
 							ispisiStatus("Izmenjeni podaci su sacuvani.");
 						}
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja u fajl.", "Greska",
+						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja u updateFajl.", "Greska",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
