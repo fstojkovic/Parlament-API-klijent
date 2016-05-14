@@ -13,7 +13,7 @@ import gui.ParlamentGUI;
 
 @SuppressWarnings("serial")
 public class ParlamentTableModel extends AbstractTableModel {
-	
+
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private final String[] kolone = new String[] { "ID", "Ime", "Prezime", "Datum rodjenja" };
 	private static ParlamentGUI glavniProzor;
@@ -60,9 +60,10 @@ public class ParlamentTableModel extends AbstractTableModel {
 		case 2:
 			return p.getPrezime();
 		case 3:
-			return sdf.format(p.getDatumRodjenja());
+			if (p.getDatumRodjenja() != null)
+				return sdf.format(p.getDatumRodjenja());
 		default:
-			return "N/A";
+			return null;
 		}
 	}
 
@@ -78,14 +79,14 @@ public class ParlamentTableModel extends AbstractTableModel {
 			if (!s.isEmpty())
 				p.setIme(s);
 			else
-				JOptionPane.showMessageDialog(glavniProzor, "Vrednost kolone ne sme biti prazan string!", "Greska",
+				JOptionPane.showMessageDialog(glavniProzor, "Ime ne sme biti prazan string!", "Greska",
 						JOptionPane.ERROR_MESSAGE);
 			return;
 		case 2:
 			if (!s.isEmpty())
 				p.setIme(s);
 			else
-				JOptionPane.showMessageDialog(glavniProzor, "Vrednost kolone ne sme biti prazan string!", "Greska",
+				JOptionPane.showMessageDialog(glavniProzor, "Prezime ne sme biti prazan string!", "Greska",
 						JOptionPane.ERROR_MESSAGE);
 			return;
 		case 3:

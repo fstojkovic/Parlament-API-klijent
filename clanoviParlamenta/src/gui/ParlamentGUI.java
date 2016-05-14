@@ -29,14 +29,19 @@ import javax.swing.border.TitledBorder;
 import domain.Poslanik;
 import gui.model.ParlamentTableModel;
 import util.ParlamentAPIKomunikacija;
+import javax.swing.JPopupMenu;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JMenuItem;
 
 public class ParlamentGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JPanel panel;
-	private JButton btnSacuvajUFajl;
-	private JButton btnIspisi;
-	private JButton btnUpdate;
+	private JButton btnGETMembers;
+	private JButton btnFillTable;
+	private JButton btnUpdateMembers;
 
 	private JPanel panelJug;
 	private JTextArea jtfStatus;
@@ -46,6 +51,8 @@ public class ParlamentGUI extends JFrame {
 	private JPanel panelCentar;
 	private JTable table;
 	private JScrollPane scrollPane;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmAbout;
 
 	/**
 	 * Create the frame.
@@ -86,28 +93,29 @@ public class ParlamentGUI extends JFrame {
 	}
 
 	private JButton getBtnSacuvajUFajl() {
-		if (btnSacuvajUFajl == null) {
-			btnSacuvajUFajl = new JButton("Sacuvaj u fajl");
-			btnSacuvajUFajl.addActionListener(new ActionListener() {
+		if (btnGETMembers == null) {
+			btnGETMembers = new JButton("GET members");
+			btnGETMembers.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						Kontroler.sacuvajJson();
 						ispisiStatus("Poslanici su preuzeti sa servisa.");
 					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(contentPane, "Greska prilikom upisivanja u fajl." + '\n' + "Proveri da li sajt radi. ", "Greska",
+						JOptionPane.showMessageDialog(contentPane,
+								"Greska prilikom upisivanja u fajl." + '\n' + "Proveri da li sajt radi. ", "Greska",
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			});
-			btnSacuvajUFajl.setPreferredSize(new Dimension(140, 25));
+			btnGETMembers.setPreferredSize(new Dimension(140, 25));
 		}
-		return btnSacuvajUFajl;
+		return btnGETMembers;
 	}
 
 	private JButton getBtnIspisi() {
-		if (btnIspisi == null) {
-			btnIspisi = new JButton("Ispisi");
-			btnIspisi.addActionListener(new ActionListener() {
+		if (btnFillTable == null) {
+			btnFillTable = new JButton("Fill table");
+			btnFillTable.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
 
@@ -118,16 +126,16 @@ public class ParlamentGUI extends JFrame {
 
 				}
 			});
-			btnIspisi.setPreferredSize(new Dimension(140, 25));
+			btnFillTable.setPreferredSize(new Dimension(140, 25));
 		}
-		return btnIspisi;
+		return btnFillTable;
 
 	}
 
 	private JButton getBtnUpdate() {
-		if (btnUpdate == null) {
-			btnUpdate = new JButton("Update");
-			btnUpdate.addActionListener(new ActionListener() {
+		if (btnUpdateMembers == null) {
+			btnUpdateMembers = new JButton("Update members");
+			btnUpdateMembers.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					ParlamentTableModel model = (ParlamentTableModel) (table.getModel());
 					try {
@@ -144,9 +152,9 @@ public class ParlamentGUI extends JFrame {
 					}
 				}
 			});
-			btnUpdate.setPreferredSize(new Dimension(140, 25));
+			btnUpdateMembers.setPreferredSize(new Dimension(140, 25));
 		}
-		return btnUpdate;
+		return btnUpdateMembers;
 	}
 
 	private JPanel getPanelJug() {
@@ -189,6 +197,7 @@ public class ParlamentGUI extends JFrame {
 			table = new JTable();
 			table.setModel(new ParlamentTableModel());
 			table.setFillsViewportHeight(true);
+			addPopup(table, getPopupMenu());
 		}
 		return table;
 	}
@@ -203,5 +212,46 @@ public class ParlamentGUI extends JFrame {
 
 	public void ispisiStatus(String txt) {
 		jtfStatus.setText(txt);
+	}
+
+	private JPopupMenu getPopupMenu() {
+		if (popupMenu == null) {
+			popupMenu = new JPopupMenu();
+			popupMenu.add(getMntmAbout());
+		}
+		return popupMenu;
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
+
+	private JMenuItem getMntmAbout() {
+		if (mntmAbout == null) {
+			mntmAbout = new JMenuItem("About");
+			mntmAbout.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					JOptionPane.showMessageDialog(contentPane, "Autor: Filip Stojkovic", "Version 1.0",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			});
+		}
+		return mntmAbout;
 	}
 }

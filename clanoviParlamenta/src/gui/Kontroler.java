@@ -22,8 +22,9 @@ public class Kontroler {
 			public void run() {
 				try {
 					API = new ParlamentAPIKomunikacija();
-					ParlamentGUI frame = new ParlamentGUI();
-					frame.setVisible(true);
+					glavniProzor = new ParlamentGUI();
+					glavniProzor.setLocationRelativeTo(null);
+					glavniProzor.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

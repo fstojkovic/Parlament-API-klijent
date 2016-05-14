@@ -30,11 +30,11 @@ public class ParlamentAPIKomunikacija {
 	private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy.");
 	private static ParlamentGUI glavniProzor;
 
-	// citanje podataka u Json formatu iz fajla
+	// Citanje podataka u Json formatu iz fajla
 
 	public List<Poslanik> vratiPoslanike() {
 		try {
-			FileReader reader = new FileReader("data/provera.json");
+			FileReader reader = new FileReader("data/serviceMembers.json");
 
 			Gson gson = new GsonBuilder().create();
 			JsonArray membersJson = gson.fromJson(reader, JsonArray.class);
@@ -62,8 +62,8 @@ public class ParlamentAPIKomunikacija {
 			return members;
 
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(glavniProzor, "Ne postoji fajl na lokaciji data/members.json", "Greska",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(glavniProzor, "Ne postoji fajl na lokaciji data/serviceMembers.json",
+					"Greska", JOptionPane.ERROR_MESSAGE);
 
 		}
 		return new LinkedList<Poslanik>();
@@ -120,7 +120,8 @@ public class ParlamentAPIKomunikacija {
 			memberJson.addProperty("id", p.getId());
 			memberJson.addProperty("name", p.getIme());
 			memberJson.addProperty("lastName", p.getPrezime());
-			memberJson.addProperty("birthDate", sdf.format(p.getDatumRodjenja()));
+			if (p.getDatumRodjenja() != null)
+				memberJson.addProperty("birthDate", sdf.format(p.getDatumRodjenja()));
 			membersArray.add(memberJson);
 		}
 
